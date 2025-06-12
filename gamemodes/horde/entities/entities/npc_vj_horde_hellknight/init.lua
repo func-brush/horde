@@ -88,7 +88,7 @@ end
 
 function ENT:CustomOnInitialize()
     self:SetCollisionBounds(Vector(13, 13, 50), Vector(-13, -13, 0))
-    self:SetModelScale(1.75)
+    self:SetModelScale(1.75, 0.001)
     self.HasLeapAttack = false
     self.AnimTbl_Run = ACT_WALK
     self:SetColor(Color(25, 25, 25))
@@ -100,6 +100,16 @@ function ENT:CustomOnInitialize()
         self:Rage()
     end)
 	
+	self:SetName(self:GetName() .. "name" .. self:EntIndex())
+	local f = ents.Create("info_particle_system")
+	f:SetKeyValue("effect_name","burning_character")
+	f:SetPos(self:GetPos())
+	f:Fire("Start","",0)
+	f:SetParent(self)
+	f:SetKeyValue("cpoint" .. 1, self:GetName())
+	f:Spawn()
+	f:Activate()
+
     self:AddRelationship("npc_headcrab_poison D_LI 99")
     self:AddRelationship("npc_headcrab_fast D_LI 99")
 end
@@ -111,12 +121,6 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
         self:UnRage()
         hitEnt:Horde_AddDebuffBuildup(HORDE.Status_Ignite, 35, self)
     end
-end
-
-function ENT:CustomOnThink_AIEnabled()
-	if not self:IsOnFire() then
-		self:Ignite(99999)
-	end
 end
 
 function ENT:UnRage()
@@ -161,4 +165,3 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,corpseEnt)
 end
 
 VJ.AddNPC("Hell Knight","npc_vj_horde_hellknight", "Zombies")
-ENT.Immune_Fire = true
