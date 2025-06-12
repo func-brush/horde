@@ -48,12 +48,21 @@ ENT.GeneralSoundPitch2 = 100
 ENT.CanFlinch = 1
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
-	self:SetRenderMode(RENDERMODE_TRANSCOLOR)
 	self:SetColor(Color(50, 50, 0))
-    --self:Ignite(99999999)
+
 	self:AddRelationship("npc_headcrab_poison D_LI 99")
 	self:AddRelationship("npc_headcrab_fast D_LI 99")
-	self:SetModelScale(1.25)
+	self:SetModelScale(1.15, 0.001)
+
+	self:SetName(self:GetName() .. "name" .. self:EntIndex())
+	local f = ents.Create("info_particle_system")
+	f:SetKeyValue("effect_name","burning_character")
+	f:SetPos(self:GetPos())
+	f:Fire("Start","",0)
+	f:SetParent(self)
+	f:SetKeyValue("cpoint" .. 1, self:GetName())
+	f:Spawn()
+	f:Activate() 
 end
 
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo, hitgroup)
