@@ -157,11 +157,6 @@ end
 
 function ENT:CustomOnKilled(dmginfo,hitgroup)
 	self:StopSound("npc/fast_zombie/fz_frenzy1.wav")
-	self:Extinguish()
-end
-
-function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,corpseEnt)
-	self.Corpse:Ignite(math.Rand(8,10),0)
 end
 
 VJ.AddNPC("Hell Knight","npc_vj_horde_hellknight", "Zombies")
